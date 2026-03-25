@@ -1,4 +1,25 @@
 import React from 'react';
+import {
+  History,
+  Share2,
+  Zap,
+  Droplets,
+  Thermometer,
+  Gauge,
+  Calendar,
+  Cpu,
+  ZoomIn,
+  ZoomOut,
+  Rotate3d,
+  AlertTriangle,
+  Gavel,
+  Eye,
+  Radio,
+  Factory,
+  ClipboardCheck,
+  FileText,
+  Star,
+} from 'lucide-react';
 
 export function DetailView() {
   return (
@@ -16,10 +37,10 @@ export function DetailView() {
         </nav>
         <div className="flex gap-6">
           <button className="flex items-center gap-1 text-xs font-semibold text-secondary hover:text-primary transition-colors">
-            <span className="material-symbols-outlined text-sm">history</span> 历史版本
+            <History className="w-4 h-4 shrink-0" /> 历史版本
           </button>
           <button className="flex items-center gap-1 text-xs font-semibold text-secondary hover:text-primary transition-colors">
-            <span className="material-symbols-outlined text-sm">share</span> 导出
+            <Share2 className="w-4 h-4 shrink-0" /> 导出
           </button>
         </div>
       </div>
@@ -41,7 +62,7 @@ export function DetailView() {
             {/* Central Node */}
             <div className="relative z-20 flex flex-col items-center">
               <div className="w-24 h-24 rounded-full bg-error-container flex items-center justify-center node-pulse border-4 border-white shadow-xl">
-                <span className="material-symbols-outlined text-on-error-container text-4xl" style={{ fontVariationSettings: "'FILL' 1" }}>bolt</span>
+                <Zap className="w-12 h-12 text-on-error-container" fill="currentColor" strokeWidth={1.25} />
               </div>
               <p className="absolute top-28 whitespace-nowrap font-bold text-error bg-white/90 px-3 py-1 rounded-full text-sm shadow-sm border border-error/10">电缆绝缘老化</p>
             </div>
@@ -49,35 +70,35 @@ export function DetailView() {
             {/* Peripheral Nodes */}
             <div className="absolute top-[25%] left-[25%] z-10 group flex flex-col items-center">
               <div className="w-16 h-16 rounded-full bg-surface-container-lowest border border-outline-variant flex items-center justify-center shadow-lg hover:border-primary hover:shadow-primary/20 transition-all cursor-pointer">
-                <span className="material-symbols-outlined text-primary text-2xl">humidity_mid</span>
+                <Droplets className="w-8 h-8 text-primary" strokeWidth={1.75} />
               </div>
               <p className="mt-2 text-center text-xs font-medium text-on-surface-variant group-hover:text-primary transition-colors">环境湿度</p>
             </div>
 
             <div className="absolute top-[20%] right-[25%] z-10 group flex flex-col items-center">
               <div className="w-16 h-16 rounded-full bg-surface-container-lowest border border-outline-variant flex items-center justify-center shadow-lg hover:border-primary hover:shadow-primary/20 transition-all cursor-pointer">
-                <span className="material-symbols-outlined text-primary text-2xl">device_thermostat</span>
+                <Thermometer className="w-8 h-8 text-primary" strokeWidth={1.75} />
               </div>
               <p className="mt-2 text-center text-xs font-medium text-on-surface-variant group-hover:text-primary transition-colors">运行温度</p>
             </div>
 
             <div className="absolute bottom-[25%] right-[20%] z-10 group flex flex-col items-center">
               <div className="w-16 h-16 rounded-full bg-surface-container-lowest border border-outline-variant flex items-center justify-center shadow-lg hover:border-primary hover:shadow-primary/20 transition-all cursor-pointer">
-                <span className="material-symbols-outlined text-primary text-2xl">electric_meter</span>
+                <Gauge className="w-8 h-8 text-primary" strokeWidth={1.75} />
               </div>
               <p className="mt-2 text-center text-xs font-medium text-on-surface-variant group-hover:text-primary transition-colors">负载电流</p>
             </div>
 
             <div className="absolute bottom-[20%] left-[20%] z-10 group flex flex-col items-center">
               <div className="w-16 h-16 rounded-full bg-surface-container-lowest border border-outline-variant flex items-center justify-center shadow-lg hover:border-primary hover:shadow-primary/20 transition-all cursor-pointer">
-                <span className="material-symbols-outlined text-primary text-2xl">calendar_today</span>
+                <Calendar className="w-8 h-8 text-primary" strokeWidth={1.75} />
               </div>
               <p className="mt-2 text-center text-xs font-medium text-on-surface-variant group-hover:text-primary transition-colors">使用年限</p>
             </div>
 
             <div className="absolute bottom-[10%] left-[50%] -translate-x-1/2 z-10 group flex flex-col items-center">
               <div className="w-16 h-16 rounded-full bg-surface-container-lowest border border-outline-variant flex items-center justify-center shadow-lg hover:border-primary hover:shadow-primary/20 transition-all cursor-pointer">
-                <span className="material-symbols-outlined text-primary text-2xl">settings_input_component</span>
+                <Cpu className="w-8 h-8 text-primary" strokeWidth={1.75} />
               </div>
               <p className="mt-2 text-center text-xs font-medium text-on-surface-variant group-hover:text-primary transition-colors">材质性能</p>
             </div>
@@ -102,13 +123,13 @@ export function DetailView() {
           {/* Graph Controls */}
           <div className="absolute top-6 right-6 flex flex-col gap-2">
             <button className="w-10 h-10 bg-surface-container-lowest rounded-lg shadow-md flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors border border-outline-variant/20">
-              <span className="material-symbols-outlined">zoom_in</span>
+              <ZoomIn className="w-5 h-5" />
             </button>
             <button className="w-10 h-10 bg-surface-container-lowest rounded-lg shadow-md flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors border border-outline-variant/20">
-              <span className="material-symbols-outlined">zoom_out</span>
+              <ZoomOut className="w-5 h-5" />
             </button>
             <button className="w-10 h-10 bg-surface-container-lowest rounded-lg shadow-md flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors border border-outline-variant/20">
-              <span className="material-symbols-outlined">3d_rotation</span>
+              <Rotate3d className="w-5 h-5" />
             </button>
           </div>
         </section>
@@ -120,7 +141,7 @@ export function DetailView() {
             {/* Hazard Title & Risk Level */}
             <div className="space-y-4">
               <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold tracking-wide bg-error-container text-on-error-container border border-error/20">
-                <span className="material-symbols-outlined text-sm mr-1" style={{ fontVariationSettings: "'FILL' 1" }}>warning</span> 重大风险 (Major Risk)
+                <AlertTriangle className="w-4 h-4 mr-1 shrink-0" fill="currentColor" strokeWidth={1.5} /> 重大风险 (Major Risk)
               </span>
               <h1 className="text-3xl font-extrabold font-headline text-on-surface tracking-tight">电缆绝缘老化破损</h1>
               
@@ -157,14 +178,14 @@ export function DetailView() {
               </h3>
               <div className="flex flex-col gap-3">
                 <div className="flex items-start gap-3 text-sm p-4 bg-surface-container-lowest rounded-xl ambient-shadow">
-                  <span className="material-symbols-outlined text-error text-xl shrink-0">gavel</span>
+                  <Gavel className="w-6 h-6 text-error shrink-0" strokeWidth={1.75} />
                   <div>
                     <p className="font-bold text-on-surface">GB 50217-2018</p>
                     <p className="text-xs text-on-surface-variant mt-1 leading-relaxed">《电力工程电缆设计标准》：绝缘选型与耐热等级规定</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 text-sm p-4 bg-surface-container-lowest rounded-xl ambient-shadow">
-                  <span className="material-symbols-outlined text-error text-xl shrink-0">gavel</span>
+                  <Gavel className="w-6 h-6 text-error shrink-0" strokeWidth={1.75} />
                   <div>
                     <p className="font-bold text-on-surface">DL/T 596</p>
                     <p className="text-xs text-on-surface-variant mt-1 leading-relaxed">《电力设备预防性试验规程》：绝缘电阻、介质损耗角正切值标准</p>
@@ -181,19 +202,19 @@ export function DetailView() {
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 bg-surface-container-lowest rounded-xl ambient-shadow flex flex-col items-center justify-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-2xl">visibility</span>
+                  <Eye className="w-8 h-8 text-primary" strokeWidth={1.75} />
                   <span className="text-xs font-medium text-on-surface">人工巡检</span>
                 </div>
                 <div className="p-4 bg-surface-container-lowest rounded-xl ambient-shadow flex flex-col items-center justify-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-2xl">sensors</span>
+                  <Radio className="w-8 h-8 text-primary" strokeWidth={1.75} />
                   <span className="text-xs font-medium text-on-surface">在线监测感应</span>
                 </div>
                 <div className="p-4 bg-surface-container-lowest rounded-xl ambient-shadow flex flex-col items-center justify-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-2xl">history</span>
+                  <History className="w-8 h-8 text-primary" strokeWidth={1.75} />
                   <span className="text-xs font-medium text-on-surface">预防性试验</span>
                 </div>
                 <div className="p-4 bg-surface-container-lowest rounded-xl ambient-shadow flex flex-col items-center justify-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-2xl">precision_manufacturing</span>
+                  <Factory className="w-8 h-8 text-primary" strokeWidth={1.75} />
                   <span className="text-xs font-medium text-on-surface">出厂缺陷分析</span>
                 </div>
               </div>
@@ -207,7 +228,7 @@ export function DetailView() {
               </h3>
               <div className="bg-primary/5 p-5 rounded-xl border border-primary/10">
                 <div className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-primary shrink-0">fact_check</span>
+                  <ClipboardCheck className="w-5 h-5 text-primary shrink-0" strokeWidth={1.75} />
                   <div>
                     <p className="text-sm font-bold text-primary-container">推荐管控方案</p>
                     <ul className="text-xs text-on-surface-variant leading-relaxed mt-3 list-disc ml-4 space-y-2">
@@ -224,11 +245,11 @@ export function DetailView() {
             {/* Action Buttons */}
             <div className="flex flex-col gap-4 pt-4 pb-8">
               <button className="w-full py-3.5 bg-gradient-to-r from-primary to-primary-container text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all active:scale-95">
-                <span className="material-symbols-outlined">description</span>
+                <FileText className="w-5 h-5" />
                 生成隐患报告 (Generate Report)
               </button>
               <button className="w-full py-3.5 bg-surface-container-lowest border border-outline-variant/50 text-primary-container rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors active:scale-95 ambient-shadow">
-                <span className="material-symbols-outlined">star</span>
+                <Star className="w-5 h-5" />
                 加入收藏记录 (Add to Favorites)
               </button>
             </div>
