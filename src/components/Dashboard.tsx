@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import {
   Flame,
@@ -11,7 +11,10 @@ import {
   Shield,
   Search,
   BadgeCheck,
+  Loader2,
 } from 'lucide-react';
+import type { HazardRecord } from '../data/yinghuanLibrary';
+import { loadYinghuanWorkbook, filterHazardRecords, hazardDisplayTitle } from '../data/yinghuanLibrary';
 
 const categories: {
   icon: LucideIcon;
@@ -114,7 +117,59 @@ const domainBarClass: Record<'安全' | '生产' | '质量', string> = {
   质量: 'bg-emerald-600',
 };
 
-export function Dashboard() {
+type DashboardProps = {
+  /** 从首页搜索结果进入隐患详情并定位该条 */
+  onSelectHazard?: (hazardId: string) => void;
+};
+
+export function Dashboard({ onSelectHazard }: DashboardProps) {
+  const [library, setLibrary] = useState<HazardRecord[]>([]);
+  const [libLoading, setLibLoading] = useState(true);
+  const [libError, setLibError] = useState('');
+  const [searchInput, setSearchInput] = useState('');
+  const [searchHint, setSearchHint] = useState('');
+  const [searchResults, setSearchResults] = useState<HazardRecord[] | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadYinghuanWorkbook()
+      .then((rows) => {
+        if (!cancelled) {
+          setLibrary(rows);
+          setLibLoading(false);
+        }
+      })
+      .catch((e) => {
+        if (!cancelled) {
+          setLibError(e instanceof Error ? e.message : '隐患库加载失败');
+          setLibLoading(false);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const runSearch = useCallback(() => {
+    const q = searchInput.trim();
+    if (!q) {
+      setSearchHint('请输入关键词后再查询');
+      setSearchResults(null);
+      return;
+    }
+    setSearchHint('');
+    setSearchResults(filterHazardRecords(library, q, 40));
+  }, [library, searchInput]);
+
+  const hotSearch = useCallback(
+    (keyword: string) => {
+      setSearchInput(keyword);
+      setSearchHint('');
+      setSearchResults(filterHazardRecords(library, keyword, 40));
+    },
+    [library],
+  );
+
   return (
     <div className="flex-1 flex flex-col items-center px-8 py-12 overflow-y-auto">
       {/* Hero Section */}
@@ -138,27 +193,102 @@ export function Dashboard() {
           整合全业务链条安全隐患数据，构建闭环管理机制，利用智能化分析引擎实时预警，为企业安全运营提供坚实的数字化保障。
         </p>
 
-        {/* Search Container */}
+        {/* Search Container — 数据来自 yinghuanfenlei.xlsx 解析结果 */}
         <div className="w-full max-w-3xl relative group">
-          <div className="absolute -inset-1 bg-gradient-to-r from-primary to-primary-container rounded-xl blur opacity-20 group-focus-within:opacity-40 transition duration-300"></div>
-          <div className="relative flex items-center">
-            <div className="absolute left-5 text-primary">
-              <Search className="w-8 h-8" />
+          {/* 装饰层必须穿透点击，否则会挡住输入框、按钮与结果列表 */}
+          <div
+            className="pointer-events-none absolute -inset-1 z-0 bg-gradient-to-r from-primary to-primary-container rounded-xl blur opacity-20 group-focus-within:opacity-40 transition duration-300"
+            aria-hidden
+          />
+          <div className="relative z-10 flex items-center">
+            <div className="absolute left-5 text-primary pointer-events-none">
+              {libLoading ? <Loader2 className="w-8 h-8 animate-spin" /> : <Search className="w-8 h-8" />}
             </div>
-            <input 
-              type="text" 
-              className="w-full pl-14 pr-32 py-5 bg-surface-container-lowest border border-outline-variant/30 rounded-xl text-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all ambient-shadow" 
-              placeholder="搜索隐患代码、地点、类型或责任人..." 
+            <input
+              type="text"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') runSearch();
+              }}
+              disabled={libLoading || !!libError}
+              className="w-full pl-14 pr-32 py-5 bg-surface-container-lowest border border-outline-variant/30 rounded-xl text-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all ambient-shadow disabled:opacity-60"
+              placeholder="搜索隐患编号、级别、排查内容、工程板块、分类…"
             />
-            <button className="absolute right-3 px-6 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-primary-container transition-colors shadow-md active:scale-95">
+            <button
+              type="button"
+              onClick={runSearch}
+              disabled={libLoading || !!libError}
+              className="absolute right-3 px-6 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-primary-container transition-colors shadow-md active:scale-95 disabled:opacity-50"
+            >
               立即查询
             </button>
           </div>
-          <div className="flex gap-4 mt-4 justify-center">
-            <span className="text-xs text-on-surface-variant">热门搜索:</span>
-            <a href="#" className="text-xs text-primary font-medium hover:underline">消防栓检查</a>
-            <a href="#" className="text-xs text-primary font-medium hover:underline">电气火灾监控</a>
-            <a href="#" className="text-xs text-primary font-medium hover:underline">深基坑支护</a>
+          <div className="relative z-10">
+          {libError ? (
+            <p className="text-center text-sm text-error mt-3">{libError}</p>
+          ) : null}
+          {searchHint ? <p className="text-center text-sm text-on-surface-variant mt-3">{searchHint}</p> : null}
+          <div className="flex flex-wrap gap-3 mt-4 justify-center items-center">
+            <span className="text-xs text-on-surface-variant shrink-0">热门搜索:</span>
+            <button
+              type="button"
+              onClick={() => hotSearch('消防')}
+              className="text-xs text-primary font-medium hover:underline"
+            >
+              消防
+            </button>
+            <button
+              type="button"
+              onClick={() => hotSearch('基坑')}
+              className="text-xs text-primary font-medium hover:underline"
+            >
+              基坑
+            </button>
+            <button
+              type="button"
+              onClick={() => hotSearch('制度')}
+              className="text-xs text-primary font-medium hover:underline"
+            >
+              制度
+            </button>
+          </div>
+          {searchResults !== null ? (
+            <div className="mt-6 w-full text-left rounded-xl border border-outline-variant/20 bg-surface-container-lowest ambient-shadow overflow-hidden">
+              <div className="px-4 py-2 border-b border-outline-variant/20 bg-surface-container/50 text-xs text-on-surface-variant">
+                共匹配 <span className="font-mono font-semibold text-on-surface">{searchResults.length}</span> 条（最多展示 40 条）
+              </div>
+              <ul className="max-h-72 overflow-y-auto custom-scrollbar divide-y divide-outline-variant/15">
+                {searchResults.length === 0 ? (
+                  <li className="px-4 py-8 text-center text-sm text-on-surface-variant">无匹配条目，请更换关键词</li>
+                ) : (
+                  searchResults.map((h) => (
+                    <li key={h.id}>
+                      <button
+                        type="button"
+                        onClick={() => onSelectHazard?.(h.id)}
+                        className="w-full text-left px-4 py-3 hover:bg-surface-container/40 transition-colors cursor-pointer"
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <span className="text-xs font-mono font-semibold text-primary-container shrink-0">
+                            {h.code || '—'}
+                          </span>
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant shrink-0">
+                            {h.level || '—'}
+                          </span>
+                        </div>
+                        <p className="text-sm text-on-surface mt-1 line-clamp-2">{hazardDisplayTitle(h)}</p>
+                        <p className="text-[10px] text-outline mt-1 truncate">{h.sheetName}</p>
+                        {onSelectHazard ? (
+                          <p className="text-[10px] text-primary font-medium mt-2">点击查看隐患详情 →</p>
+                        ) : null}
+                      </button>
+                    </li>
+                  ))
+                )}
+              </ul>
+            </div>
+          ) : null}
           </div>
         </div>
       </div>
