@@ -14,6 +14,26 @@ export default function App() {
   const [addRecordOpen, setAddRecordOpen] = useState(false);
   const clearDetailFocus = useCallback(() => setDetailFocusId(null), []);
 
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    try {
+      return sessionStorage.getItem('sidebar_collapsed') === '1';
+    } catch {
+      return false;
+    }
+  });
+
+  const toggleSidebar = useCallback(() => {
+    setSidebarCollapsed((c) => {
+      const next = !c;
+      try {
+        sessionStorage.setItem('sidebar_collapsed', next ? '1' : '0');
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  }, []);
+
   if (!isLoggedIn) {
     return <LoginPage />;
   }
@@ -25,10 +45,16 @@ export default function App() {
         onNavigate={setCurrentView}
         onAddRecord={() => setAddRecordOpen(true)}
         onLogout={logout}
+        collapsed={sidebarCollapsed}
+        onToggleCollapse={toggleSidebar}
       />
 
-      <main className="flex-1 ml-64 flex flex-col h-screen overflow-hidden">
-        <Header showSearch={currentView === 'detail'} />
+      <main
+        className={`flex-1 flex flex-col h-screen overflow-hidden transition-[margin] duration-200 ease-out ${
+          sidebarCollapsed ? 'ml-16' : 'ml-64'
+        }`}
+      >
+        <Header />
 
         {currentView === 'dashboard' ? (
           <Dashboard

@@ -1,6 +1,6 @@
 import type { HazardRecord } from './yinghuanLibrary';
 
-/** 前 N 条在解析顺序上生成与 Excel 字段强关联的详细处置建议 */
+/** 前 N 条在解析顺序上生成与标准库字段强关联的详细处置建议 */
 export const DISPOSAL_ADVICE_COVERED_COUNT = 300;
 
 function clip(s: string, max: number): string {
@@ -10,7 +10,7 @@ function clip(s: string, max: number): string {
 }
 
 function classifyFocus(content: string): string {
-  if (!content) return '按表格「排查内容」所列要点逐条核查并形成整改清单。';
+  if (!content) return '按本条目「排查内容」所列要点逐条核查并形成整改清单。';
   if (/制度|文件|下发|流程/.test(content)) {
     return '优先核查制度是否成文、是否下发至相关岗位，补全缺失条款并留存签发与培训记录。';
   }
@@ -54,12 +54,12 @@ function levelDirective(level: string): string {
 
 function timelineClause(h: HazardRecord): string {
   if (h.rectifyDays && /^\d+(\.\d+)?$/.test(h.rectifyDays.trim())) {
-    return `Excel 给定整改期限为 ${h.rectifyDays} 天：建议第 1 日完成风险隔离与方案确认，中期完成整改实施，末期前完成复查与资料归档；超期须书面说明并升级审批。`;
+    return `依据标准条目，整改期限为 ${h.rectifyDays} 天：建议第 1 日完成风险隔离与方案确认，中期完成整改实施，末期前完成复查与资料归档；超期须书面说明并升级审批。`;
   }
   if (h.rectifyDays) {
-    return `整改期限字段为「${h.rectifyDays}」：请按企业制度将其换算为可执行日历计划，并设置提醒与逾期预警。`;
+    return `标准库标注整改期限为「${h.rectifyDays}」：请按企业制度将其换算为可执行日历计划，并设置提醒与逾期预警。`;
   }
-  return '表格未填明天数时，由项目部依据隐患级别在制度框架内明确起止日期，并同步监理（如有）确认。';
+  return '标准条目未标注整改天数时，由项目部依据隐患级别在制度框架内明确起止日期，并同步监理（如有）确认。';
 }
 
 function orgClause(h: HazardRecord, variant: number): string {
@@ -72,7 +72,7 @@ function orgClause(h: HazardRecord, variant: number): string {
   return phrases[variant % phrases.length];
 }
 
-/** 前 300 条（按解析顺序）：返回 5～6 条与表格字段结合的处置建议；其余条目返回简短通用建议 */
+/** 前 300 条（按解析顺序）：返回 5～6 条与标准库字段结合的处置建议；其余条目返回简短通用建议 */
 export function getDisposalAdviceBullets(h: HazardRecord): string[] {
   if (h.sourceOrderIndex >= DISPOSAL_ADVICE_COVERED_COUNT) {
     return [

@@ -58,7 +58,7 @@ export function AddRecordModal({ open, onClose }: Props) {
 
         <div className="p-6 space-y-6">
           <p className="text-sm text-on-surface-variant leading-relaxed">
-            请通过导入方式添加记录，支持 Word 文档（.doc / .docx）、PDF（.pdf）与 Excel 表格（.xlsx）。
+            请通过导入方式添加记录，支持 Word 文档（.doc / .docx）、PDF（.pdf）与电子表格（.xlsx）。
           </p>
 
           <input ref={inputRef} type="file" accept={ACCEPT} className="hidden" onChange={handleFile} />
@@ -74,7 +74,7 @@ export function AddRecordModal({ open, onClose }: Props) {
             </div>
             <div className="flex flex-col items-center gap-2 p-4 rounded-xl bg-surface-container border border-outline-variant/20 text-center">
               <FileSpreadsheet className="w-8 h-8 text-primary" />
-              <span className="text-xs font-medium text-on-surface">Excel</span>
+              <span className="text-xs font-medium text-on-surface">表格</span>
             </div>
           </div>
 

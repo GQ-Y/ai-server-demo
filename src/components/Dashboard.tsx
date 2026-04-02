@@ -193,7 +193,7 @@ export function Dashboard({ onSelectHazard }: DashboardProps) {
           整合全业务链条安全隐患数据，构建闭环管理机制，利用智能化分析引擎实时预警，为企业安全运营提供坚实的数字化保障。
         </p>
 
-        {/* Search Container — 数据来自 yinghuanfenlei.xlsx 解析结果 */}
+        {/* Search Container — 隐患标准知识库 */}
         <div className="w-full max-w-3xl relative group">
           {/* 装饰层必须穿透点击，否则会挡住输入框、按钮与结果列表 */}
           <div
@@ -374,39 +374,16 @@ export function Dashboard({ onSelectHazard }: DashboardProps) {
             </div>
           </div>
 
-          {/* Activity List */}
-          <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/20 ambient-shadow">
-            <h4 className="font-bold text-on-surface mb-4">最新动态</h4>
-            <div className="space-y-5">
-              <div className="flex gap-4">
-                <div className="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0"></div>
-                <div>
-                  <p className="text-sm font-medium text-on-surface">张伟 提交了 消防栓巡检记录</p>
-                  <p className="text-xs text-on-surface-variant mt-1">10 分钟前 · 第五车间</p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0"></div>
-                <div>
-                  <p className="text-sm font-medium text-on-surface">配电室 02 隐患已闭环</p>
-                  <p className="text-xs text-on-surface-variant mt-1">35 分钟前 · 审核人: 李芳</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       
       {/* Footer */}
-      <footer className="w-full max-w-6xl mt-auto border-t border-outline-variant/20 pt-8 pb-4 flex flex-col md:flex-row justify-between items-center gap-4">
-        <div className="flex items-center gap-2">
+      <footer className="w-full max-w-6xl mt-auto border-t border-outline-variant/20 pt-8 pb-4 flex justify-center items-center">
+        <div className="flex items-center gap-2 text-center">
           <BadgeCheck className="w-5 h-5 text-primary shrink-0" strokeWidth={2} />
-          <span className="text-sm text-on-surface-variant">© 2024 统一AI安全质量风险治理监控平台 | 中国铁路安全标准认证</span>
-        </div>
-        <div className="flex gap-6 text-sm font-medium text-on-surface-variant">
-          <a href="#" className="hover:text-primary transition-colors">隐私政策</a>
-          <a href="#" className="hover:text-primary transition-colors">服务条款</a>
-          <a href="#" className="hover:text-primary transition-colors">联系支持</a>
+          <span className="text-sm text-on-surface-variant">
+            © 2024 统一AI安全质量风险治理监控平台 | 三级安全风险专项知识库系统
+          </span>
         </div>
       </footer>
     </div>

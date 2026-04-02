@@ -17,7 +17,7 @@ function str(v: unknown): string {
   return String(v).trim();
 }
 
-/** 从 public 目录下的隐患分类 Excel 解析全部工作表为扁平列表 */
+/** 从 public 目录下的隐患分类标准库文件解析全部工作表为扁平列表 */
 export async function loadYinghuanWorkbook(url = '/xlsx/yinghuanfenlei.xlsx'): Promise<HazardRecord[]> {
   const XLSX = await import('xlsx');
   const res = await fetch(url);
@@ -134,7 +134,7 @@ export function extractStandardRefs(text: string): StandardRef[] {
   if (results.length === 0) {
     results.push({
       code: '工程板块管理制度',
-      desc: '请结合当前工程板块 Excel 工作表分类及企业制度、行业规范综合判定。',
+      desc: '请结合当前工程板块划分、企业制度与行业规范综合判定。',
     });
   }
 

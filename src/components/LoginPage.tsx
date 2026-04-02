@@ -4,8 +4,8 @@ import { useAuth } from '../auth/AuthContext';
 
 export function LoginPage() {
   const { login } = useAuth();
-  const [username, setUsername] = useState('18181630321');
-  const [password, setPassword] = useState('admin123');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   function handleSubmit(e: React.FormEvent) {
@@ -13,7 +13,7 @@ export function LoginPage() {
     setError('');
     const ok = login(username, password);
     if (!ok) {
-      setError('账号或密码错误（演示环境：账号 18181630321，密码 admin123）');
+      setError('密码错误');
     }
   }
 
