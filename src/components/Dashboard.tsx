@@ -373,23 +373,7 @@ export function Dashboard({ onSelectHazard, onAIChat }: DashboardProps) {
           </div>
         </div>
 
-        {/* Right Column */}
-        <div className="col-span-12 lg:col-span-4 flex flex-col gap-6">
-          {/* Highlight Card */}
-          <div className="bg-gradient-to-br from-primary to-primary-container p-6 rounded-2xl text-white ambient-shadow relative overflow-hidden group">
-            <div className="absolute -right-10 -top-10 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
-            <h4 className="text-sm font-medium opacity-80 mb-4">知识库规模</h4>
-            <div className="space-y-4 relative z-10">
-              <p className="text-lg leading-snug font-headline font-bold">
-                知识库累计向量词 <span className="text-2xl tabular-nums">30 万+</span>
-              </p>
-              <p className="text-sm leading-relaxed opacity-95">
-                累计收录隐患、规范、条例 <span className="font-semibold tabular-nums">10 万+</span> 条
-              </p>
-            </div>
-          </div>
-
-        </div>
+        
       </div>
       
       {/* Footer */}
@@ -397,7 +381,7 @@ export function Dashboard({ onSelectHazard, onAIChat }: DashboardProps) {
         <div className="flex items-center gap-2 text-center">
           <BadgeCheck className="w-5 h-5 text-primary shrink-0" strokeWidth={2} />
           <span className="text-sm text-on-surface-variant">
-            © 2024 统一AI安全质量风险治理监控平台 | 三级安全风险专项知识库系统
+            © 2024 统一AI安全质量风险治理监控平台 | 安全风险质量知识库
           </span>
         </div>
       </footer>

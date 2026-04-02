@@ -51,8 +51,8 @@ export function Sidebar({
         </div>
         {!collapsed ? (
           <div className="min-w-0 flex-1 pr-1">
-            <h2 className="text-primary-container font-bold font-headline text-sm leading-tight">AI安全风险知识库</h2>
-            <p className="text-xs text-on-surface-variant">系统管理员</p>
+            <h2 className="text-primary-container font-bold font-headline text-sm leading-tight">安全风险质量知识库</h2>
+            <p className="text-xs text-on-surface-variant">超级管理员</p>
           </div>
         ) : null}
         {onToggleCollapse ? (

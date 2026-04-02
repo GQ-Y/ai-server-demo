@@ -24,7 +24,7 @@ export function LoginPage() {
           <div className="w-14 h-14 bg-primary-container rounded-xl flex items-center justify-center text-white shadow-lg mb-4">
             <Shield className="w-9 h-9" fill="currentColor" strokeWidth={1.5} />
           </div>
-          <h1 className="text-2xl font-bold font-headline text-primary-container">统一AI安全质量风险治理监控平台</h1>
+          <h1 className="text-2xl font-bold font-headline text-primary-container">统一AI安全质量风险治理数据处理中台</h1>
           <p className="text-sm text-on-surface-variant mt-2">请登录以继续</p>
         </div>
 
