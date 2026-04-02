@@ -86,15 +86,15 @@ async function createCollection(): Promise<void> {
   });
 }
 
-// ---------- OpenAI Embedding ----------
+// ---------- Embedding（硅基流动） ----------
 const openai = new OpenAI({
-  baseURL: env.MODELSCOPE_BASE_URL,
-  apiKey: env.MODELSCOPE_API_KEY,
+  baseURL: env.SILICONFLOW_BASE_URL || 'https://api.siliconflow.cn/v1',
+  apiKey: env.SILICONFLOW_API_KEY,
 });
-const EMBEDDING_MODEL = env.MODELSCOPE_EMBEDDING_MODEL || 'Qwen/Qwen3-Embedding-0.6B';
-const BATCH_SIZE = 8;
-const EMBED_DELAY_MS = 1200;
-const MAX_RETRIES = 5;
+const EMBEDDING_MODEL = env.SILICONFLOW_EMBEDDING_MODEL || 'Qwen/Qwen3-Embedding-0.6B';
+const BATCH_SIZE = 4;
+const EMBED_DELAY_MS = 3000;
+const MAX_RETRIES = 6;
 
 function sleep(ms: number) {
   return new Promise<void>((r) => setTimeout(r, ms));
@@ -119,7 +119,7 @@ async function embedSingle(text: string): Promise<number[] | null> {
     } catch (e: any) {
       if (e?.status === 400) continue; // 内容过滤，换备选文本
       if (e?.status === 429) {
-        await sleep(4000);
+        await sleep(8000);
         try {
           const res = await openai.embeddings.create({ model: EMBEDDING_MODEL, input: [t] });
           return res.data[0].embedding;
@@ -152,7 +152,7 @@ async function embedBatch(
         return results;
       }
       if (e?.status === 429 && attempt < MAX_RETRIES) {
-        const wait = Math.pow(2, attempt) * 2000;
+        const wait = Math.pow(2, attempt) * 3000;
         await sleep(wait);
         continue;
       }
@@ -259,13 +259,20 @@ async function main() {
   }
   console.log();
 
-  // 3. 边向量化边插入
-  console.log(`[3/3] 向量化 + 写入（批次: ${BATCH_SIZE}，延迟: ${EMBED_DELAY_MS}ms）`);
+  // 3. 边向量化边插入（支持断点续传：跳过已入库记录）
+  const alreadyCount = exists ? await getRowCount() : 0;
+  // 向上取整到批次边界，避免漏掉部分批次
+  const resumeFrom = Math.floor(alreadyCount / BATCH_SIZE) * BATCH_SIZE;
+  if (resumeFrom > 0) {
+    console.log(`[3/3] 断点续传：跳过前 ${resumeFrom} 条（已入库 ${alreadyCount} 条），从第 ${resumeFrom + 1} 条继续`);
+  } else {
+    console.log(`[3/3] 向量化 + 写入（批次: ${BATCH_SIZE}，延迟: ${EMBED_DELAY_MS}ms）`);
+  }
   let inserted = 0;
   let skipped = 0;
   const startTime = Date.now();
 
-  for (let i = 0; i < rows.length; i += BATCH_SIZE) {
+  for (let i = resumeFrom; i < rows.length; i += BATCH_SIZE) {
     const batch = rows.slice(i, i + BATCH_SIZE);
     const texts = batch.map((r) => r.textForEmbedding);
 
