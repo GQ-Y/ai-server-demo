@@ -12,6 +12,7 @@ import {
   Search,
   BadgeCheck,
   Loader2,
+  BotMessageSquare,
 } from 'lucide-react';
 import type { HazardRecord } from '../data/yinghuanLibrary';
 import { loadYinghuanWorkbook, filterHazardRecords, hazardDisplayTitle } from '../data/yinghuanLibrary';
@@ -118,11 +119,11 @@ const domainBarClass: Record<'安全' | '生产' | '质量', string> = {
 };
 
 type DashboardProps = {
-  /** 从首页搜索结果进入隐患详情并定位该条 */
   onSelectHazard?: (hazardId: string) => void;
+  onAIChat?: (query: string) => void;
 };
 
-export function Dashboard({ onSelectHazard }: DashboardProps) {
+export function Dashboard({ onSelectHazard, onAIChat }: DashboardProps) {
   const [library, setLibrary] = useState<HazardRecord[]>([]);
   const [libLoading, setLibLoading] = useState(true);
   const [libError, setLibError] = useState('');
@@ -215,14 +216,28 @@ export function Dashboard({ onSelectHazard }: DashboardProps) {
               className="w-full pl-14 pr-32 py-5 bg-surface-container-lowest border border-outline-variant/30 rounded-xl text-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all ambient-shadow disabled:opacity-60"
               placeholder="搜索隐患编号、级别、排查内容、工程板块、分类…"
             />
-            <button
-              type="button"
-              onClick={runSearch}
-              disabled={libLoading || !!libError}
-              className="absolute right-3 px-6 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-primary-container transition-colors shadow-md active:scale-95 disabled:opacity-50"
-            >
-              立即查询
-            </button>
+            <div className="absolute right-3 flex gap-2">
+              <button
+                type="button"
+                onClick={runSearch}
+                disabled={libLoading || !!libError}
+                className="px-5 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-primary-container transition-colors shadow-md active:scale-95 disabled:opacity-50 text-sm"
+              >
+                立即查询
+              </button>
+              {onAIChat && (
+                <button
+                  type="button"
+                  onClick={() => onAIChat(searchInput.trim())}
+                  disabled={libLoading}
+                  title="使用 AI 语义问答检索"
+                  className="flex items-center gap-1.5 px-4 py-2.5 bg-surface-container-lowest border border-primary/30 text-primary font-semibold rounded-lg hover:bg-primary/10 transition-colors shadow-sm active:scale-95 disabled:opacity-50 text-sm"
+                >
+                  <BotMessageSquare className="w-4 h-4 shrink-0" />
+                  AI 问答
+                </button>
+              )}
+            </div>
           </div>
           <div className="relative z-10">
           {libError ? (

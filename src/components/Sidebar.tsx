@@ -7,11 +7,13 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
+  BotMessageSquare,
 } from 'lucide-react';
+import type { AppView } from '../App';
 
 interface SidebarProps {
-  currentView: 'dashboard' | 'detail';
-  onNavigate: (view: 'dashboard' | 'detail') => void;
+  currentView: AppView;
+  onNavigate: (view: AppView) => void;
   onAddRecord?: () => void;
   onLogout?: () => void;
   collapsed?: boolean;
@@ -87,6 +89,16 @@ export function Sidebar({
         >
           <AlertTriangle className="w-5 h-5 shrink-0" />
           {!collapsed ? <span className="text-sm tracking-wider">隐患管理</span> : null}
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onNavigate('ai-chat')}
+          title="AI 智能问答"
+          className={navBtn(currentView === 'ai-chat', collapsed)}
+        >
+          <BotMessageSquare className="w-5 h-5 shrink-0" />
+          {!collapsed ? <span className="text-sm tracking-wider">AI 智能问答</span> : null}
         </button>
       </nav>
 
